@@ -1,7 +1,7 @@
 import collections
-import json
 import itertools
 
+from gendiff.parser import parse_file
 
 DELETED = 'deleted'
 ADDED = 'added'
@@ -17,11 +17,6 @@ DIFF_TYPE_CHAR = {
 }
 
 Diff = collections.namedtuple('Diff', ('type', 'val1', 'val2'))
-
-
-def read_json(file_path):
-    with open(file_path) as f:
-        return json.load(f)
 
 
 def get_dict_diff(d1, d2):
@@ -66,8 +61,8 @@ def format_diff(diff, replacer=' ', spaces_count=2):
 
 
 def generate_diff(file_path1, file_path2):
-    json1 = read_json(file_path1)
-    json2 = read_json(file_path2)
+    json1 = parse_file(file_path1)
+    json2 = parse_file(file_path2)
 
     diff = get_dict_diff(json1, json2)
     return format_diff(diff)

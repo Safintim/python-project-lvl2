@@ -1,5 +1,3 @@
-import os
-
 from gendiff.gendiff import (
     Diff,
     DELETED, ADDED, CHANGED, UNCHANGED,
@@ -7,35 +5,40 @@ from gendiff.gendiff import (
     get_dict_diff,
     to_json,
 )
+from tests.plugins import read, get_fixture_path, get_input
 
-
-def get_fixture_path(file_path):
-    current_dir = os.path.dirname(os.path.abspath(__file__))
-    return os.path.join(current_dir, 'fixtures', file_path)
-
-
-def read(file_path):
-    with open(file_path, 'r') as f:
-        result = f.read()
-    return result
 
 
 # expected_data = {"nested": [], "plain": []}
 plain_data = read(
-    get_fixture_path('expected_plain.txt')
+    get_fixture_path('expected/plain.txt')
 ).rstrip().split('\n\n\n')
 
 
 def test_generate_diff_json():
-    file_path1 = get_fixture_path('file1_1.json')
-    file_path2 = get_fixture_path('file2_1.json')
+    file_path1 = get_input('file1_1.json')
+    file_path2 = get_input('file2_1.json')
     result = generate_diff(file_path1, file_path2)
     assert result == plain_data[0]
 
 
 def test_generate_diff_json_all_changed():
-    file_path1 = get_fixture_path('file1_1.json')
-    file_path2 = get_fixture_path('file2_2.json')
+    file_path1 = get_input('file1_1.json')
+    file_path2 = get_input('file2_2.json')
+    result = generate_diff(file_path1, file_path2)
+    assert result == plain_data[1]
+
+
+def test_generate_diff_yaml():
+    file_path1 = get_input('file1_1.yaml', format='yaml')
+    file_path2 = get_input('file2_1.yml', format='yaml')
+    result = generate_diff(file_path1, file_path2)
+    assert result == plain_data[0]
+
+
+def test_generate_diff_yaml_all_changed():
+    file_path1 = get_input('file1_1.yaml', format='yaml')
+    file_path2 = get_input('file2_2.yaml', format='yaml')
     result = generate_diff(file_path1, file_path2)
     assert result == plain_data[1]
 
