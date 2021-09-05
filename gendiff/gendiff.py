@@ -45,7 +45,7 @@ def to_json(value):
     elif isinstance(value, bool):
         return str(value).lower()
     elif isinstance(value, (str, int)):
-        return value
+        return str(value)
 
 
 def format_diff(diff, replacer=' ', spaces_count=2):
