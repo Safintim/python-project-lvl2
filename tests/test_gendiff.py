@@ -1,8 +1,10 @@
-from gendiff.gendiff import (
+from gendiff.formatters import (
     DELETED, ADDED, CHANGED, UNCHANGED,
+    to_json
+)
+from gendiff.gendiff import (
     generate_diff,
     get_dict_diff,
-    to_json,
 )
 from tests.plugins import read, get_fixture_path, get_input
 
