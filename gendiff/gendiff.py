@@ -1,6 +1,4 @@
-import collections
 import itertools
-import json
 
 from gendiff.parser import parse_file
 
@@ -62,7 +60,7 @@ def to_json(value):
     return str(value)
 
 
-def format_tree(tree, replacer=' ', spaces_count=2):
+def stylish(tree, replacer=' ', spaces_count=2):
     def iter_(current_tree, depth):
         nested_ident_count = depth + spaces_count
         nested_ident = replacer * nested_ident_count
@@ -89,9 +87,9 @@ def format_tree(tree, replacer=' ', spaces_count=2):
     return iter_(tree, 0)
 
 
-def generate_diff(file_path1, file_path2):
+def generate_diff(file_path1, file_path2, formatter=stylish):
     json1 = parse_file(file_path1)
     json2 = parse_file(file_path2)
 
     diff = get_dict_diff(json1, json2)
-    return format_tree(diff)
+    return formatter(diff)

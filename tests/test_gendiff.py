@@ -51,6 +51,13 @@ def test_generate_diff_yaml_plain_all_changed():
     assert result == plain_data[1]
 
 
+def test_generate_diff_yaml_nested():
+    file_path1 = get_input('nested1.yaml', format='yaml')
+    file_path2 = get_input('nested2.yaml', format='yaml')
+    result = generate_diff(file_path1, file_path2)
+    assert result == nested_data[0]
+
+
 def test_to_json():
     assert to_json(1) == '1'
     assert to_json('string') == 'string'
