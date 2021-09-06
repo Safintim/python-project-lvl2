@@ -1,5 +1,6 @@
 import collections
 import itertools
+import json
 
 from gendiff.parser import parse_file
 
@@ -16,29 +17,39 @@ DIFF_TYPE_CHAR = {
     UNCHANGED: ' ',
 }
 
-Diff = collections.namedtuple('Diff', ('type', 'val1', 'val2'))
-
 
 def get_dict_diff(d1, d2):
     keys = d1.keys() | d2.keys()
     diff = {}
     for key in keys:
+        value1 = d1.get(key)
+        value2 = d2.get(key)
         if key not in d2:
-            diff[key] = {'status': DELETED, 'value': d1[key]}
+            if isinstance(value1, dict):
+                value1 = get_dict_diff(value1, value1)
+
+            diff[key] = {'status': DELETED, 'value': value1}
         elif key not in d1:
-            diff[key] = {'status': ADDED, 'value': d2[key]}
-        elif isinstance(d1[key], dict) and isinstance(d2[key], dict):
+            if isinstance(value2, dict):
+                value2 = get_dict_diff(value2, value2)
+
+            diff[key] = {'status': ADDED, 'value': value2}
+        elif isinstance(value1, dict) and isinstance(value2, dict):
             diff[key] = {
                 'status': UNCHANGED,
-                'value': get_dict_diff(d1[key], d2[key]),
+                'value': get_dict_diff(value1, value2),
             }
-        elif d1[key] == d2[key]:
-            diff[key] = {'status': UNCHANGED, 'value': d1[key]}
+        elif value1 == value2:
+            diff[key] = {'status': UNCHANGED, 'value': value1}
         else:
+            if isinstance(value1, dict):
+                value1 = get_dict_diff(value1, value1)
+            if isinstance(value2, dict):
+                value2 = get_dict_diff(value2, value2)
             diff[key] = {
                 'status': CHANGED,
-                'value': d1[key],
-                'new_value': d2[key],
+                'value': value1,
+                'new_value': value2,
             }
     return diff
 
@@ -51,22 +62,31 @@ def to_json(value):
     return str(value)
 
 
-def format_diff(diff, replacer=' ', spaces_count=2):
-    ident = replacer * spaces_count
+def format_tree(tree, replacer=' ', spaces_count=2):
+    def iter_(current_tree, depth):
+        nested_ident_count = depth + spaces_count
+        nested_ident = replacer * nested_ident_count
+        current_ident = replacer * depth
+        lines = []
+        for key, diff in sorted(current_tree.items()):
+            status_char = DIFF_TYPE_CHAR[diff.get('status')]
+            val = diff.get('value')
 
-    lines = []
-    for key, diff in sorted(diff.items()):
-        type_ = DIFF_TYPE_CHAR[diff['status']]
-        if not isinstance(diff['value'], dict):
-            val = to_json(diff['value'])
-            lines.append(f'{ident}{type_} {key}: {val}')
-            if diff['status'] == CHANGED:
-                type_ = DIFF_TYPE_CHAR[ADDED]
-                val = to_json(diff['new_value'])
-                lines.append(f'{ident}{type_} {key}: {val}')
+            if isinstance(val, dict):
+                val = iter_(val, nested_ident_count + 2)
+            else:
+                val = to_json(val)
 
-    result = itertools.chain('{', lines, '}')
-    return '\n'.join(result)
+            lines.append(f'{nested_ident}{status_char} {key}: {val}')
+
+            if diff.get('status') == CHANGED:
+                status_char = DIFF_TYPE_CHAR[ADDED]
+                val = to_json(diff.get('new_value'))
+                lines.append(f'{nested_ident}{status_char} {key}: {val}')
+
+        result = itertools.chain('{', lines, [current_ident + '}'])
+        return '\n'.join(result)
+    return iter_(tree, 0)
 
 
 def generate_diff(file_path1, file_path2):
@@ -74,4 +94,4 @@ def generate_diff(file_path1, file_path2):
     json2 = parse_file(file_path2)
 
     diff = get_dict_diff(json1, json2)
-    return format_diff(diff)
+    return format_tree(diff)

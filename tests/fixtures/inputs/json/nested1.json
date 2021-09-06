@@ -4,9 +4,9 @@
         "setting2": 200,
         "setting3": true,
         "setting6": {
-        "key": "value",
-        "doge": {
-            "wow": ""
+            "key": "value",
+            "doge": {
+                "wow": ""
             }
         }
     },

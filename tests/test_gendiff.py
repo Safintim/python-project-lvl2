@@ -4,7 +4,6 @@ from gendiff.gendiff import (
     get_dict_diff,
     to_json,
 )
-from gendiff.parser import parse_file
 from tests.plugins import read, get_fixture_path, get_input
 
 
@@ -155,7 +154,12 @@ def test_get_dict_diff_nested():
         },
         'group2': {
             'status': ADDED,
-            'value': {'sdf': 123}
+            'value': {
+                'sdf': {
+                    'status': UNCHANGED,
+                    'value': 123
+                }
+            },
         }
     }
     assert get_dict_diff(nested1, nested2) == expected
