@@ -16,39 +16,57 @@ DIFF_TYPE_CHAR = {
 }
 
 
-def get_dict_diff(d1, d2):
-    keys = d1.keys() | d2.keys()
+def mark_as_deleted(dict_, key, value):
+    if isinstance(value, dict):
+        value = get_dict_diff(value, value)
+    dict_[key] = {'status': DELETED, 'value': value}
+
+
+def mark_as_added(dict_, key, value):
+    if isinstance(value, dict):
+        value = get_dict_diff(value, value)
+    dict_[key] = {'status': ADDED, 'value': value}
+
+
+def mark_as_unchanged_for_complex_value(dict_, key, value1, value2):
+    dict_[key] = {
+        'status': UNCHANGED,
+        'value': get_dict_diff(value1, value2),
+    }
+
+
+def mark_as_unchanged(dict_, key, value):
+    dict_[key] = {'status': UNCHANGED, 'value': value}
+
+
+def mark_as_changed(dict_, key, value1, value2):
+    if isinstance(value1, dict):
+        value1 = get_dict_diff(value1, value1)
+    if isinstance(value2, dict):
+        value2 = get_dict_diff(value2, value2)
+    dict_[key] = {
+        'status': CHANGED,
+        'value': value1,
+        'new_value': value2,
+    }
+
+
+def get_dict_diff(first_dict, second_dict):
+    keys = first_dict.keys() | second_dict.keys()
     diff = {}
     for key in keys:
-        value1 = d1.get(key)
-        value2 = d2.get(key)
-        if key not in d2:
-            if isinstance(value1, dict):
-                value1 = get_dict_diff(value1, value1)
-
-            diff[key] = {'status': DELETED, 'value': value1}
-        elif key not in d1:
-            if isinstance(value2, dict):
-                value2 = get_dict_diff(value2, value2)
-
-            diff[key] = {'status': ADDED, 'value': value2}
+        value1 = first_dict.get(key)
+        value2 = second_dict.get(key)
+        if key not in second_dict:
+            mark_as_deleted(diff, key, value1)
+        elif key not in first_dict:
+            mark_as_added(diff, key, value2)
         elif isinstance(value1, dict) and isinstance(value2, dict):
-            diff[key] = {
-                'status': UNCHANGED,
-                'value': get_dict_diff(value1, value2),
-            }
+            mark_as_unchanged_for_complex_value(diff, key, value1, value2)
         elif value1 == value2:
-            diff[key] = {'status': UNCHANGED, 'value': value1}
+            mark_as_unchanged(diff, key, value1)
         else:
-            if isinstance(value1, dict):
-                value1 = get_dict_diff(value1, value1)
-            if isinstance(value2, dict):
-                value2 = get_dict_diff(value2, value2)
-            diff[key] = {
-                'status': CHANGED,
-                'value': value1,
-                'new_value': value2,
-            }
+            mark_as_changed(diff, key, value1, value2)
     return diff
 
 
