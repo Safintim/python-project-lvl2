@@ -24,13 +24,22 @@ def get_dict_diff(d1, d2):
     diff = {}
     for key in keys:
         if key not in d2:
-            diff[key] = Diff(DELETED, d1[key], None)
+            diff[key] = {'status': DELETED, 'value': d1[key]}
         elif key not in d1:
-            diff[key] = Diff(ADDED, d2[key], None)
+            diff[key] = {'status': ADDED, 'value': d2[key]}
+        elif isinstance(d1[key], dict) and isinstance(d2[key], dict):
+            diff[key] = {
+                'status': UNCHANGED,
+                'value': get_dict_diff(d1[key], d2[key]),
+            }
         elif d1[key] == d2[key]:
-            diff[key] = Diff(UNCHANGED, d1[key], None)
+            diff[key] = {'status': UNCHANGED, 'value': d1[key]}
         else:
-            diff[key] = Diff(CHANGED, d1[key], d2[key])
+            diff[key] = {
+                'status': CHANGED,
+                'value': d1[key],
+                'new_value': d2[key],
+            }
     return diff
 
 
@@ -39,8 +48,7 @@ def to_json(value):
         return 'null'
     elif isinstance(value, bool):
         return str(value).lower()
-    elif isinstance(value, (str, int)):
-        return str(value)
+    return str(value)
 
 
 def format_diff(diff, replacer=' ', spaces_count=2):
@@ -48,13 +56,14 @@ def format_diff(diff, replacer=' ', spaces_count=2):
 
     lines = []
     for key, diff in sorted(diff.items()):
-        type_ = DIFF_TYPE_CHAR[diff.type]
-        val = to_json(diff.val1)
-        lines.append(f'{ident}{type_} {key}: {val}')
-        if diff.type == CHANGED:
-            type_ = DIFF_TYPE_CHAR[ADDED]
-            val = to_json(diff.val2)
+        type_ = DIFF_TYPE_CHAR[diff['status']]
+        if not isinstance(diff['value'], dict):
+            val = to_json(diff['value'])
             lines.append(f'{ident}{type_} {key}: {val}')
+            if diff['status'] == CHANGED:
+                type_ = DIFF_TYPE_CHAR[ADDED]
+                val = to_json(diff['new_value'])
+                lines.append(f'{ident}{type_} {key}: {val}')
 
     result = itertools.chain('{', lines, '}')
     return '\n'.join(result)
