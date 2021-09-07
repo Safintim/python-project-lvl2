@@ -10,53 +10,53 @@ from tests.plugins import read, get_fixture_path, get_input
 
 
 # expected_data = {"nested": [], "plain": []}
-plain_data = read(
-    get_fixture_path('expected/plain.txt')
+flatten_data = read(
+    get_fixture_path('expected/stylish_flatten.txt')
 ).rstrip().split('\n\n\n')
 nested_data = read(
-    get_fixture_path('expected/nested.txt')
+    get_fixture_path('expected/stylish_nested.txt')
 ).rstrip().split('\n\n\n')
 
 
-def test_generate_diff_json_plain():
+def test_generate_diff_stylish_json_flatten():
     file_path1 = get_input('file1_1.json')
     file_path2 = get_input('file2_1.json')
     result = generate_diff(file_path1, file_path2)
-    assert result == plain_data[0]
+    assert result == flatten_data[0]
 
 
-def test_generate_diff_json_plain_all_changed():
+def test_generate_diff_stylish_json_flatten_all_changed():
     file_path1 = get_input('file1_1.json')
     file_path2 = get_input('file2_2.json')
     result = generate_diff(file_path1, file_path2)
-    assert result == plain_data[1]
+    assert result == flatten_data[1]
 
 
-def test_generate_diff_json_nested():
+def test_generate_diff_stylish_json_nested():
     file_path1 = get_input('nested1.json')
     file_path2 = get_input('nested2.json')
-    result = generate_diff(file_path1, file_path2)
+    result = generate_diff(file_path1, file_path2, format_name='stylish')
     assert result == nested_data[0]
 
 
-def test_generate_diff_plain_yaml():
+def test_generate_diff_stylish_yaml_flatten():
     file_path1 = get_input('file1_1.yaml', format='yaml')
     file_path2 = get_input('file2_1.yml', format='yaml')
     result = generate_diff(file_path1, file_path2)
-    assert result == plain_data[0]
+    assert result == flatten_data[0]
 
 
-def test_generate_diff_yaml_plain_all_changed():
+def test_generate_diff_stylish_yaml_flatten_all_changed():
     file_path1 = get_input('file1_1.yaml', format='yaml')
     file_path2 = get_input('file2_2.yaml', format='yaml')
     result = generate_diff(file_path1, file_path2)
-    assert result == plain_data[1]
+    assert result == flatten_data[1]
 
 
-def test_generate_diff_yaml_nested():
+def test_generate_diff_stylish_yaml_nested():
     file_path1 = get_input('nested1.yaml', format='yaml')
     file_path2 = get_input('nested2.yaml', format='yaml')
-    result = generate_diff(file_path1, file_path2)
+    result = generate_diff(file_path1, file_path2, format_name='stylish')
     assert result == nested_data[0]
 
 

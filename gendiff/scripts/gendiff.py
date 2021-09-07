@@ -16,17 +16,11 @@ def main():
         help='set format of output',
     )
     namespace = parser.parse_args()
-
-    if namespace.format == 'stylish':
-        format_ = stylish
-    else:
-        format_ = plain
-
     print(
         generate_diff(
-            namespace.first_file,
-            namespace.second_file,
-            format_,
+            file_path1=namespace.first_file,
+            file_path2=namespace.second_file,
+            format=namespace.forma,
         )
     )
 

@@ -39,9 +39,14 @@ def get_dict_diff(first_dict, second_dict): # noqa flake8(C901)
     return diff
 
 
-def generate_diff(file_path1, file_path2, formatter=formatters.stylish):
+def generate_diff(file_path1, file_path2, format_name='stylish'):
     json1 = parse_file(file_path1)
     json2 = parse_file(file_path2)
+
+    if format_name == 'stylish':
+        formatter = formatters.stylish
+    else:
+        formatter = formatters.plain
 
     diff = get_dict_diff(json1, json2)
     return formatter(diff)
