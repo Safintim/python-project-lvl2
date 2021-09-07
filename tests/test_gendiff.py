@@ -70,10 +70,10 @@ def test_to_json():
 
 def test_get_dict_diff_with_empty():
     assert get_dict_diff({}, {'one': 1}) == {
-        'one': {'status': ADDED, 'value': 1}
+        'one': {'status': ADDED, 'value': 1, 'new_value': None}
     }
     assert get_dict_diff({'one': 1}, {}) == {
-        'one': {'status': DELETED, 'value': 1}
+        'one': {'status': DELETED, 'value': 1, 'new_value': None}
     }
 
 
@@ -83,9 +83,9 @@ def test_get_dict_diff():
         {'one': 2, 'three': 3, 'fourth': 4}
     ) == {
         'one': {'status': CHANGED, 'value': 1, 'new_value': 2},
-        'two': {'status': DELETED, 'value': 2},
-        'three': {'status': ADDED, 'value': 3},
-        'fourth': {'status': UNCHANGED, 'value': 4},
+        'two': {'status': DELETED, 'value': 2, 'new_value': None},
+        'three': {'status': ADDED, 'value': 3, 'new_value': None},
+        'fourth': {'status': UNCHANGED, 'value': 4, 'new_value': None},
     }
 
 
@@ -127,7 +127,8 @@ def test_get_dict_diff_nested():
                     'value': 'Value 1',
                     'new_value': 'Value 100'
                 }
-            }
+            },
+            'new_value': None
         },
         'group1': {
             'status': UNCHANGED,
@@ -135,13 +136,15 @@ def test_get_dict_diff_nested():
                 'baz': {
                     'status': DELETED,
                     'value': 'bas',
+                    'new_value': None,
                 },
                 'nest': {
                     'status': UNCHANGED,
                     'value': {
                         'key': {
                             'status': UNCHANGED,
-                            'value': 'value'
+                            'value': 'value',
+                            'new_value': None
                         },
                         'key2': {
                             'status': CHANGED,
@@ -151,24 +154,30 @@ def test_get_dict_diff_nested():
                         },
                         'key3': {
                             'status': ADDED,
-                            'value': '1'
+                            'value': '1',
+                            'new_value': None
                         }
-                    }
+                    },
+                    'new_value': None
                 },
                 'meta': {
                     'status': ADDED,
                     'value': 10,
+                    'new_value': None
                 }
-            }
+            },
+            'new_value': None
         },
         'group2': {
             'status': ADDED,
             'value': {
                 'sdf': {
                     'status': UNCHANGED,
-                    'value': 123
+                    'value': 123,
+                    'new_value': None
                 }
             },
+            'new_value': None
         }
     }
     assert get_dict_diff(nested1, nested2) == expected
