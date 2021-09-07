@@ -2,12 +2,6 @@ from gendiff import formatters
 from gendiff.parser import parse_file
 
 
-DELETED = 'deleted'
-ADDED = 'added'
-CHANGED = 'changed'
-UNCHANGED = 'unchanged'
-
-
 def create_node(status, value, new_value=None):
     return {'status': status, 'value': value, 'new_value': new_value}
 
@@ -49,4 +43,6 @@ def generate_diff(file_path1, file_path2, format_name='stylish'):
         formatter = formatters.plain
 
     diff = get_dict_diff(json1, json2)
+    # import json
+    # print(json.dumps(diff, indent=4))
     return formatter(diff)
