@@ -1,3 +1,4 @@
+from gendiff.formatters import stylish
 from gendiff import formatters
 from gendiff.parser import parse_file
 
@@ -37,14 +38,17 @@ def create_diff_tree(first_dict, second_dict):
     return diff_tree
 
 
+FORMATTERS_BY_NAME = {
+    "stylish": formatters.stylish,
+    "json": formatters.stylish,
+    "plain": formatters.plain,
+}
+
+
 def generate_diff(file_path1, file_path2, format_name="stylish"):
     json1 = parse_file(file_path1)
     json2 = parse_file(file_path2)
 
-    if format_name == "stylish":
-        formatter = formatters.stylish
-    else:
-        formatter = formatters.plain
-
+    formatter = FORMATTERS_BY_NAME.get(format_name, format_name)
     diff = create_diff_tree(json1, json2)
     return formatter(diff)

@@ -35,6 +35,13 @@ def test_generate_diff_stylish_json_nested():
     assert result == stylish_nested_data[0]
 
 
+def test_generate_diff_json_nested():
+    file_path1 = get_input("nested1.json")
+    file_path2 = get_input("nested2.json")
+    result = generate_diff(file_path1, file_path2, format_name="json")
+    assert result == stylish_nested_data[0]
+
+
 def test_generate_diff_plain_json_nested():
     file_path1 = get_input("nested1.json")
     file_path2 = get_input("nested2.json")
