@@ -41,7 +41,7 @@ def create_diff_tree(first_dict, second_dict):
 
 FORMATTERS_BY_NAME = {
     "stylish": formatters.stylish,
-    "json": lambda d: json.dumps(d, indent=4),
+    "json": lambda d: json.dumps(d, sort_keys=True, indent=4),
     "plain": formatters.plain,
 }
 

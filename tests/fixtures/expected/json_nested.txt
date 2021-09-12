@@ -1,0 +1,165 @@
+{
+    "common": {
+        "new_value": null,
+        "status": "unchanged",
+        "value": {
+            "follow": {
+                "new_value": null,
+                "status": "added",
+                "value": false
+            },
+            "setting1": {
+                "new_value": null,
+                "status": "unchanged",
+                "value": "Value 1"
+            },
+            "setting2": {
+                "new_value": null,
+                "status": "removed",
+                "value": 200
+            },
+            "setting3": {
+                "new_value": {
+                    "key": {
+                        "new_value": null,
+                        "status": "unchanged",
+                        "value": "value"
+                    }
+                },
+                "status": "updated",
+                "value": true
+            },
+            "setting4": {
+                "new_value": null,
+                "status": "added",
+                "value": "blah blah"
+            },
+            "setting5": {
+                "new_value": null,
+                "status": "added",
+                "value": {
+                    "key5": {
+                        "new_value": null,
+                        "status": "unchanged",
+                        "value": "value5"
+                    }
+                }
+            },
+            "setting6": {
+                "new_value": null,
+                "status": "unchanged",
+                "value": {
+                    "doge": {
+                        "new_value": null,
+                        "status": "unchanged",
+                        "value": {
+                            "wow": {
+                                "new_value": "so much",
+                                "status": "updated",
+                                "value": ""
+                            }
+                        }
+                    },
+                    "key": {
+                        "new_value": null,
+                        "status": "unchanged",
+                        "value": "value"
+                    },
+                    "ops": {
+                        "new_value": null,
+                        "status": "added",
+                        "value": "vops"
+                    }
+                }
+            },
+            "settings10": {
+                "new_value": null,
+                "status": "unchanged",
+                "value": {
+                    "key": {
+                        "new_value": null,
+                        "status": "unchanged",
+                        "value": "value"
+                    }
+                }
+            }
+        }
+    },
+    "group1": {
+        "new_value": null,
+        "status": "unchanged",
+        "value": {
+            "baz": {
+                "new_value": "bars",
+                "status": "updated",
+                "value": "bas"
+            },
+            "foo": {
+                "new_value": null,
+                "status": "unchanged",
+                "value": "bar"
+            },
+            "nest": {
+                "new_value": "str",
+                "status": "updated",
+                "value": {
+                    "key": {
+                        "new_value": null,
+                        "status": "unchanged",
+                        "value": "value"
+                    }
+                }
+            }
+        }
+    },
+    "group2": {
+        "new_value": null,
+        "status": "removed",
+        "value": {
+            "abc": {
+                "new_value": null,
+                "status": "unchanged",
+                "value": 12345
+            },
+            "deep": {
+                "new_value": null,
+                "status": "unchanged",
+                "value": {
+                    "id": {
+                        "new_value": null,
+                        "status": "unchanged",
+                        "value": 45
+                    }
+                }
+            }
+        }
+    },
+    "group3": {
+        "new_value": null,
+        "status": "added",
+        "value": {
+            "deep": {
+                "new_value": null,
+                "status": "unchanged",
+                "value": {
+                    "id": {
+                        "new_value": null,
+                        "status": "unchanged",
+                        "value": {
+                            "number": {
+                                "new_value": null,
+                                "status": "unchanged",
+                                "value": 45
+                            }
+                        }
+                    }
+                }
+            },
+            "fee": {
+                "new_value": null,
+                "status": "unchanged",
+                "value": 100500
+            }
+        }
+    }
+}

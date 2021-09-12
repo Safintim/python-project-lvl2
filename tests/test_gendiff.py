@@ -1,4 +1,4 @@
-from gendiff.formatters import ADDED, REMOVED, UNCHANGED, UPDATED, stylish
+from gendiff.formatters import ADDED, REMOVED, UNCHANGED, UPDATED
 from gendiff.gendiff import create_diff_tree, generate_diff
 from tests.plugins import get_fixture_path, get_input, read
 
@@ -11,6 +11,9 @@ stylish_nested_data = (
 )
 plain_nested_data = (
     read(get_fixture_path("expected/plain_nested.txt")).rstrip().split("\n\n\n")
+)
+json_nested_data = (
+    read(get_fixture_path("expected/json_nested.txt")).rstrip().split("\n\n\n")
 )
 
 
@@ -39,7 +42,7 @@ def test_generate_diff_json_nested():
     file_path1 = get_input("nested1.json")
     file_path2 = get_input("nested2.json")
     result = generate_diff(file_path1, file_path2, format_name="json")
-    assert result == stylish_nested_data[0]
+    assert result == json_nested_data[0]
 
 
 def test_generate_diff_plain_json_nested():
