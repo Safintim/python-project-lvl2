@@ -1,4 +1,4 @@
-from gendiff.formatters import ADDED, REMOVED, UNCHANGED, UPDATED
+from gendiff.formatters import ADDED, REMOVED, UNCHANGED, UPDATED, stylish
 from gendiff.gendiff import create_diff_tree, generate_diff
 from tests.plugins import get_fixture_path, get_input, read
 

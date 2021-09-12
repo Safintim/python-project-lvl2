@@ -27,6 +27,9 @@ def stylish(tree, replacer=" ", spaces_count=2):
             if isinstance(val, dict):
                 val = iter_(val, nested_indent_count + base_indent)
 
+            if isinstance(new_value, dict):
+                new_value = iter_(new_value, nested_indent_count + base_indent)
+
             add_line_to(
                 lines,
                 indent=nested_indent,
