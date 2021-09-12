@@ -17,6 +17,9 @@
             key: value
           + ops: vops
         }
+        settings10: {
+            key: value
+        }
     }
     group1: {
       - baz: bas

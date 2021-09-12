@@ -10,6 +10,8 @@ common:
     ops: vops
     doge:
       wow: so much
+  settings10:
+        key: value
 group1:
   foo: bar
   baz: bars
