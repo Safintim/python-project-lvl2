@@ -1,10 +1,7 @@
-from gendiff.formatters import (
-    DELETED, ADDED, CHANGED, UNCHANGED,
-    to_json, to_plain, get_current_path
-)
+from gendiff.formatters import DELETED, ADDED, CHANGED, UNCHANGED
 from gendiff.gendiff import (
     generate_diff,
-    get_dict_diff,
+    create_diff_tree,
 )
 from tests.plugins import read, get_fixture_path, get_input
 
@@ -46,8 +43,6 @@ def test_generate_diff_plain_json_nested():
     file_path1 = get_input('nested1.json')
     file_path2 = get_input('nested2.json')
     result = generate_diff(file_path1, file_path2, format_name='plain')
-    print()
-    print(result)
     assert result == plain_nested_data[0]
 
 
@@ -72,31 +67,17 @@ def test_generate_diff_stylish_yaml_nested():
     assert result == stylish_nested_data[0]
 
 
-def test_change_path():
-    assert get_current_path('', 'common') == 'common'
-    assert get_current_path('common', 'group') == 'group'
-    assert get_current_path('common.setting', 'rk') == 'common.rk'
-
-
-def test_to_json():
-    assert to_json(1) == '1'
-    assert to_json('string') == 'string'
-    assert to_json(None) == 'null'
-    assert to_json(True) == 'true'
-    assert to_json([1, 2, 3, 4]) == '[1, 2, 3, 4]'
-
-
 def test_get_dict_diff_with_empty():
-    assert get_dict_diff({}, {'one': 1}) == {
+    assert create_diff_tree({}, {'one': 1}) == {
         'one': {'status': ADDED, 'value': 1, 'new_value': None}
     }
-    assert get_dict_diff({'one': 1}, {}) == {
+    assert create_diff_tree({'one': 1}, {}) == {
         'one': {'status': DELETED, 'value': 1, 'new_value': None}
     }
 
 
 def test_get_dict_diff():
-    assert get_dict_diff(
+    assert create_diff_tree(
         {'one': 1, 'two': 2, 'fourth': 4},
         {'one': 2, 'three': 3, 'fourth': 4}
     ) == {
@@ -198,4 +179,4 @@ def test_get_dict_diff_nested():
             'new_value': None
         }
     }
-    assert get_dict_diff(nested1, nested2) == expected
+    assert create_diff_tree(nested1, nested2) == expected
