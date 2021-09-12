@@ -1,4 +1,4 @@
-from gendiff.formatters import ADDED, REMOVED, UPDATED, UNCHANGED
+from gendiff.formatters import ADDED, REMOVED, UPDATED, UNCHANGED, to_plain
 from gendiff.formatters.plain import (
     get_current_path,
     add_line_to,
@@ -25,7 +25,7 @@ def test_add_line_to():
         value='Root value',
         new_value=None,
     )
-    assert REMOVED_PATTERN.format(path, value)
+    assert lines[0] == REMOVED_PATTERN.format(path, to_plain(value))
 
     assert add_line_to(
         lines,
@@ -34,7 +34,7 @@ def test_add_line_to():
         value='Root value',
         new_value=None,
     )
-    assert ADDED_PATTERN.format(path, value)
+    assert lines[1] == ADDED_PATTERN.format(path, to_plain(value))
 
     assert add_line_to(
         lines,
@@ -43,7 +43,10 @@ def test_add_line_to():
         value='Root value',
         new_value=new_value,
     )
-    assert UPDATED_PATTERN.format(path, value, new_value)
+    print(lines[2])
+    assert lines[2] == UPDATED_PATTERN.format(
+        path, to_plain(value), to_plain(new_value)
+    )
 
     assert add_line_to(
         lines,
@@ -52,3 +55,4 @@ def test_add_line_to():
         value='Root value',
         new_value=new_value,
     ) is False
+    assert len(lines) == 3

@@ -1,6 +1,15 @@
 import itertools
 
-from .common import DIFF_TYPE_CHAR, UPDATED, ADDED, to_json
+from .common import CHAR_BY_DIFF, UPDATED, ADDED, to_json
+
+
+PATTERN_LINE = '{}{} {}: {}'
+
+
+def add_line_to(lines, *, indent, status, key, value):
+    status_char = CHAR_BY_DIFF.get(status)
+    val = to_json(value)
+    lines.append(PATTERN_LINE.format(indent, status_char, key, val))
 
 
 def stylish(tree, replacer=' ', spaces_count=2):
@@ -12,20 +21,29 @@ def stylish(tree, replacer=' ', spaces_count=2):
         current_indent = replacer * depth
         lines = []
         for key, diff in sorted(current_tree.items()):
-            status_char = DIFF_TYPE_CHAR.get(diff.get('status'))
+            status = diff.get('status')
             val = diff.get('value')
+            new_value = diff.get('new_value')
 
             if isinstance(val, dict):
                 val = iter_(val, nested_indent_count + base_indent)
-            else:
-                val = to_json(val)
 
-            lines.append(f'{nested_indent}{status_char} {key}: {val}')
+            add_line_to(
+                lines,
+                indent=nested_indent,
+                status=status,
+                key=key,
+                value=val,
+            )
 
-            if diff.get('status') == UPDATED:
-                status_char = DIFF_TYPE_CHAR.get(ADDED)
-                val = to_json(diff.get('new_value'))
-                lines.append(f'{nested_indent}{status_char} {key}: {val}')
+            if status == UPDATED:
+                add_line_to(
+                    lines,
+                    indent=nested_indent,
+                    status=ADDED,
+                    key=key,
+                    value=new_value,
+                )
 
         result = itertools.chain('{', lines, [current_indent + '}'])
         return '\n'.join(result)

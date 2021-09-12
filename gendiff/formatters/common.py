@@ -3,7 +3,7 @@ ADDED = 'added'
 UPDATED = 'updated'
 UNCHANGED = 'unchanged'
 
-DIFF_TYPE_CHAR = {
+CHAR_BY_DIFF = {
     REMOVED: '-',
     ADDED: '+',
     UPDATED: '-',

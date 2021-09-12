@@ -3,7 +3,7 @@ from .common import (
     ADDED,
     UPDATED,
     UNCHANGED,
-    DIFF_TYPE_CHAR,
+    CHAR_BY_DIFF,
     to_json,
     to_plain,
 )
