@@ -1,4 +1,3 @@
-from gendiff.formatters import stylish
 from gendiff import formatters
 from gendiff.parser import parse_file
 
