@@ -15,7 +15,7 @@ selfcheck:
 
 check: selfcheck test lint
 
-format_code:
+format-code:
 	black .
 	isort .
 

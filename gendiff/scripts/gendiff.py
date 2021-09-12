@@ -1,6 +1,6 @@
 import argparse
 
-from gendiff.gendiff import generate_diff
+from gendiff import generate_diff
 
 
 def main():
@@ -18,7 +18,7 @@ def main():
         generate_diff(
             file_path1=namespace.first_file,
             file_path2=namespace.second_file,
-            format=namespace.forma,
+            format_name=namespace.format,
         )
     )
 
