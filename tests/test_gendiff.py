@@ -1,4 +1,4 @@
-from gendiff.formatters import DELETED, ADDED, CHANGED, UNCHANGED
+from gendiff.formatters import REMOVED, ADDED, UPDATED, UNCHANGED
 from gendiff.gendiff import (
     generate_diff,
     create_diff_tree,
@@ -72,7 +72,7 @@ def test_get_dict_diff_with_empty():
         'one': {'status': ADDED, 'value': 1, 'new_value': None}
     }
     assert create_diff_tree({'one': 1}, {}) == {
-        'one': {'status': DELETED, 'value': 1, 'new_value': None}
+        'one': {'status': REMOVED, 'value': 1, 'new_value': None}
     }
 
 
@@ -81,8 +81,8 @@ def test_get_dict_diff():
         {'one': 1, 'two': 2, 'fourth': 4},
         {'one': 2, 'three': 3, 'fourth': 4}
     ) == {
-        'one': {'status': CHANGED, 'value': 1, 'new_value': 2},
-        'two': {'status': DELETED, 'value': 2, 'new_value': None},
+        'one': {'status': UPDATED, 'value': 1, 'new_value': 2},
+        'two': {'status': REMOVED, 'value': 2, 'new_value': None},
         'three': {'status': ADDED, 'value': 3, 'new_value': None},
         'fourth': {'status': UNCHANGED, 'value': 4, 'new_value': None},
     }
@@ -122,7 +122,7 @@ def test_get_dict_diff_nested():
             'status': UNCHANGED,
             'value': {
                 'setting1': {
-                    'status': CHANGED,
+                    'status': UPDATED,
                     'value': 'Value 1',
                     'new_value': 'Value 100'
                 }
@@ -133,7 +133,7 @@ def test_get_dict_diff_nested():
             'status': UNCHANGED,
             'value': {
                 'baz': {
-                    'status': DELETED,
+                    'status': REMOVED,
                     'value': 'bas',
                     'new_value': None,
                 },
@@ -146,7 +146,7 @@ def test_get_dict_diff_nested():
                             'new_value': None
                         },
                         'key2': {
-                            'status': CHANGED,
+                            'status': UPDATED,
                             'value': 'value',
                             'new_value': None,
 

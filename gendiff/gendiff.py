@@ -17,7 +17,7 @@ def create_diff_tree(first_dict, second_dict): # noqa flake8(C901)
         value2 = second_dict.get(key)
         if key not in second_dict:
             value = create_diff_tree(value1, value1)
-            diff[key] = create_node(formatters.DELETED, value)
+            diff[key] = create_node(formatters.REMOVED, value)
         elif key not in first_dict:
             value = create_diff_tree(value2, value2)
             diff[key] = create_node(formatters.ADDED, value)
@@ -29,7 +29,7 @@ def create_diff_tree(first_dict, second_dict): # noqa flake8(C901)
         else:
             value1 = create_diff_tree(value1, value1)
             value2 = create_diff_tree(value2, value2)
-            diff[key] = create_node(formatters.CHANGED, value1, value2)
+            diff[key] = create_node(formatters.UPDATED, value1, value2)
     return diff
 
 

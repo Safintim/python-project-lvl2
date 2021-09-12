@@ -1,6 +1,6 @@
 import itertools
 
-from .common import DIFF_TYPE_CHAR, CHANGED, ADDED, to_json
+from .common import DIFF_TYPE_CHAR, UPDATED, ADDED, to_json
 
 
 def stylish(tree, replacer=' ', spaces_count=2):
@@ -22,7 +22,7 @@ def stylish(tree, replacer=' ', spaces_count=2):
 
             lines.append(f'{nested_indent}{status_char} {key}: {val}')
 
-            if diff.get('status') == CHANGED:
+            if diff.get('status') == UPDATED:
                 status_char = DIFF_TYPE_CHAR.get(ADDED)
                 val = to_json(diff.get('new_value'))
                 lines.append(f'{nested_indent}{status_char} {key}: {val}')

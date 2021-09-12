@@ -1,12 +1,12 @@
-DELETED = 'removed'
+REMOVED = 'removed'
 ADDED = 'added'
-CHANGED = 'updated'
+UPDATED = 'updated'
 UNCHANGED = 'unchanged'
 
 DIFF_TYPE_CHAR = {
-    DELETED: '-',
+    REMOVED: '-',
     ADDED: '+',
-    CHANGED: '-',
+    UPDATED: '-',
     UNCHANGED: ' ',
 }
 

@@ -1,7 +1,7 @@
 from .common import (
-    DELETED,
+    REMOVED,
     ADDED,
-    CHANGED,
+    UPDATED,
     UNCHANGED,
     DIFF_TYPE_CHAR,
     to_json,
@@ -12,9 +12,9 @@ from .stylish import stylish
 
 
 __all__ = [
-    'DELETED',
+    'REMOVED',
     'ADDED',
-    'CHANGED',
+    'UPDATED',
     'UNCHANGED',
     'DIFF_TYPE_CHAR',
     'to_json',
