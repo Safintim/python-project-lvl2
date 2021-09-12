@@ -1,9 +1,9 @@
-import gendiff.formatters as formatters
+from gendiff import formatters
 from gendiff.parser import parse_file
 
 
 def create_node(status, value, new_value=None):
-    return {'status': status, 'value': value, 'new_value': new_value}
+    return {"status": status, "value": value, "new_value": new_value}
 
 
 def add_difference_by_key_to(diff, key, first_dict, second_dict):
@@ -37,11 +37,11 @@ def create_diff_tree(first_dict, second_dict):
     return diff_tree
 
 
-def generate_diff(file_path1, file_path2, format_name='stylish'):
+def generate_diff(file_path1, file_path2, format_name="stylish"):
     json1 = parse_file(file_path1)
     json2 = parse_file(file_path2)
 
-    if format_name == 'stylish':
+    if format_name == "stylish":
         formatter = formatters.stylish
     else:
         formatter = formatters.plain

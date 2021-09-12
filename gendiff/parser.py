@@ -18,7 +18,7 @@ def read_yaml(file_path):
 
 def get_parser(file_path):
     _, extension = os.path.splitext(file_path)
-    if extension in ('.yaml', '.yml'):
+    if extension in (".yaml", ".yml"):
         return read_yaml
     return read_json
 

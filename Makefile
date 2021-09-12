@@ -15,6 +15,10 @@ selfcheck:
 
 check: selfcheck test lint
 
+format_code:
+	black .
+	isort .
+
 build:
 	poetry build
 
