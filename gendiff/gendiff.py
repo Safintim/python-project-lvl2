@@ -1,3 +1,5 @@
+import json
+
 from gendiff import formatters
 from gendiff.parser import parse_file
 
@@ -39,7 +41,7 @@ def create_diff_tree(first_dict, second_dict):
 
 FORMATTERS_BY_NAME = {
     "stylish": formatters.stylish,
-    "json": formatters.stylish,
+    "json": lambda d: json.dumps(d, indent=4),
     "plain": formatters.plain,
 }
 
